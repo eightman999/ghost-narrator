@@ -1,0 +1,4 @@
+# Claude Code が生成する SDK 型定義（再配布しない）
+.claude-plugin/types/
+node_modules/
+.DS_Store

@@ -1,0 +1,59 @@
+{
+  "name": "ghost-narrator",
+  "version": "0.1.0",
+  "description": "伺かゴースト（Ourin/SSP）が Claude Code の作業を SSTP で実況する",
+  "userConfig": {
+    "endpoint": {
+      "type": "string",
+      "title": "SSTP over HTTP endpoint",
+      "description": "Ourin/SSP の SSTP HTTP エンドポイント",
+      "default": "http://127.0.0.1:9801/api/sstp/v1"
+    },
+    "receiver": {
+      "type": "string",
+      "title": "Receiver ghost",
+      "description": "送り先ゴースト名（空なら既定ゴースト）",
+      "default": ""
+    },
+    "transport": {
+      "type": "string",
+      "title": "Transport",
+      "description": "auto: HTTP→失敗時 Ourin Distributed IPC / http / ipc",
+      "default": "auto",
+      "options": [
+        "auto",
+        "http",
+        "ipc"
+      ]
+    },
+    "voice": {
+      "type": "string",
+      "title": "Line source",
+      "description": "template: 定型文 / ai: haiku でゴースト口調の台詞を生成",
+      "default": "template",
+      "options": [
+        "template",
+        "ai"
+      ]
+    },
+    "shellDir": {
+      "type": "string",
+      "title": "Shell folder",
+      "description": "ペインに描くシェル（surface0000.png と表情パーツ）のフォルダ。空なら ~/Documents/Ourin/ghost/emily4/shell/master",
+      "default": ""
+    },
+    "sessionLink": {
+      "type": "boolean",
+      "title": "Session link in balloon",
+      "description": "完了・失敗・停止の実況で、バルーンに Claude のセッションへ戻る選択肢を付ける（デスクトップアプリのみ）",
+      "default": true
+    },
+    "permissionBalloon": {
+      "type": "boolean",
+      "title": "Permission buttons in balloon",
+      "description": "許可が必要な時、Ourin のバルーンに「許可・セッション表示・拒否」を出して答えを待つ（90秒で通常の確認へ戻る）",
+      "default": true
+    }
+  },
+  "types": "./types/index.d.ts"
+}
