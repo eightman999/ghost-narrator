@@ -34,13 +34,29 @@
 
 `/ghost say <text>` / `/ghost test` / `/ghost pane` / `/ghost mute` / `/ghost unmute` / `/ghost status`
 
-## SSP での動作について
+## SSP 互換性
 
-SSTP・さくらスクリプトは UKADOC 記載の SSP 仕様の範囲（`SEND SSTP/1.4` の Event + Script フォールバック、`\q[...,script:...]`、`\![open,browser,...]`、`\![execute,http-get,...,--nofile]`、`\*`）で組んでいる。ただし以下は Ourin / macOS 前提:
+> **状態: 仕様照合のみ・SSP 実機では未検証。** Ourin（macOS）で開発・動作確認している。
 
-- `ipc` 経路、`osascript`（JXA）、許可バルーンの「セッション表示」での `open`
-- `shellDir` の既定パスと表情パーツ番号（emily4）
-- 許可バルーンの待受に `python3` を使う
+### SSP の仕様どおりのもの（UKADOC と照合済み）
+
+| 項目 | 内容 |
+|---|---|
+| SSTP | `SEND SSTP/1.4` の `Event` + `Script` フォールバック、`Reference0`/`Reference1`、`ReceiverGhostName` |
+| SSTP over HTTP | `POST /api/sstp/v1`、`Content-Type: text/plain`。`Origin` ヘッダを付けないためリモート扱いの制限を受けない |
+| さくらスクリプト | `\q[タイトル,script:...]`、`\![open,browser,URL]`、`\![execute,http-get,URL,--nofile]`、`\*`、`\_q`、`\s[n]`、`\w8` |
+
+### Ourin / macOS 専用のもの
+
+| 機能 | SSP（Windows）での扱い |
+|---|---|
+| `transport: ipc` と `auto` の予備経路（Distributed Notification、`osascript`/JXA） | 使えない。`transport: http` を指定する |
+| 許可バルーンの「セッション表示」（`open` コマンド） | 動かない（許可・拒否は動く想定） |
+| バルーンの「セッションを開く」（`claude://` リンク） | Claude デスクトップアプリのセッション ID が前提 |
+| `shellDir` の既定パス（`~/Documents/Ourin/...`）と表情パーツ番号（emily4） | `shellDir` を明示指定する。パーツ番号はシェル依存 |
+| 許可バルーンの待受 | `python3` が PATH に必要 |
+
+Windows の SSP では `transport: http` で実況・許可バルーン（許可／拒否）が動く見込み。不具合があれば Issue へ。
 
 ## ライセンス
 
